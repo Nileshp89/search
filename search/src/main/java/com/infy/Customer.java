@@ -7,10 +7,13 @@ public class Customer {
 
     @Id
     public String id;
-
+     
     public String firstName;
+    
+    
     public String lastName;
 
+    public String address;
     public Customer() {}
 
     public Customer(String firstName, String lastName) {
