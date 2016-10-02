@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SearchApplication {
 
 	public static void main(String[] args) {
+		System.setProperty("gate.home", "C:\\Program Files\\GATE_Developer_8.1");
 		SpringApplication.run(SearchApplication.class, args);
 	}
 }
