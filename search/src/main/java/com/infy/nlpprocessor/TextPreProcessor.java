@@ -18,52 +18,46 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TextPreProcessor {
-	
+
 	POSTaggerME tagger;
-	
+
 	@PostConstruct
-	public void init() throws IOException{
-		
-		POSModel model = new POSModelLoader()	
-		.load(new File("en-pos-maxent.bin"));
-		
-		 tagger = new POSTaggerME(model);
-		 
-		String input = "Hi. How are you? This is Mike.";
-		
-		
-		
-		
-		
+	public void init() throws IOException {
+
+		POSModel model = new POSModelLoader().load(new File("en-pos-maxent.bin"));
+		tagger = new POSTaggerME(model);
 	}
-	
-	
-	public void POSTagData(String input) throws IOException{
-		
-		
-		ObjectStream<String> lineStream = new PlainTextByLineStream(
-				new StringReader(input));
-	 
-		
+
+	public void POSTagData(String input) throws IOException {
+
+		ObjectStream<String> lineStream = new PlainTextByLineStream(new StringReader(input));
+
 		String line;
 		while ((line = lineStream.read()) != null) {
-	 
-			String whitespaceTokenizerLine[] = WhitespaceTokenizer.INSTANCE
-					.tokenize(line);
+
+			String whitespaceTokenizerLine[] = WhitespaceTokenizer.INSTANCE.tokenize(line);
 			String[] tags = tagger.tag(whitespaceTokenizerLine);
-	 
+			
+			
+			
 			POSSample sample = new POSSample(whitespaceTokenizerLine, tags);
 			System.out.println(sample.toString());
-	 
+			String[] sentence = sample.getSentence();
+			StringBuffer stringBuffer = new StringBuffer();
 			
+			for (int i = 0; i < tags.length; i++) {
 			
+				if (tags[i].equals("NNP")) {
+					
+					stringBuffer.append(sentence[i]+",");
+					System.out.println(sentence[i]+"-------------"+tags[i]);
+					
+				}
+			}
 			
+
 		}
-		
-	}	
-	
-	
-	
-	
+
+	}
 
 }

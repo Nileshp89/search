@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TextEntityExtractor {
-	
+
 	private ConditionalSerialAnalyserController annieController;
 
 	@PostConstruct
@@ -34,20 +34,19 @@ public class TextEntityExtractor {
 		// Load ANNIE plugin
 		File gateHome = Gate.getGateHome();
 		File pluginsHome = new File(gateHome, "plugins");
-		Gate.getCreoleRegister().registerDirectories(
-				new File(pluginsHome, "ANNIE").toURI().toURL());
+		Gate.getCreoleRegister().registerDirectories(new File(pluginsHome, "ANNIE").toURI().toURL());
 		System.out.println("...GATE initialised");
-		
+
 		initAnnie();
-		
+
 	}
+
 	public void initAnnie() throws GateException, IOException {
 		System.out.println("Initialising ANNIE...");
 
 		// create a serial analyser controller to run ANNIE with
-		annieController = (ConditionalSerialAnalyserController) PersistenceManager
-				.loadObjectFromFile(new File(new File(Gate.getPluginsHome(),
-						ANNIEConstants.PLUGIN_DIR), ANNIEConstants.DEFAULT_FILE));
+		annieController = (ConditionalSerialAnalyserController) PersistenceManager.loadObjectFromFile(
+				new File(new File(Gate.getPluginsHome(), ANNIEConstants.PLUGIN_DIR), ANNIEConstants.DEFAULT_FILE));
 
 		System.out.println("...ANNIE loaded");
 	} // initAnnie()
@@ -61,39 +60,28 @@ public class TextEntityExtractor {
 		annieController.execute();
 		System.out.println("...ANNIE complete");
 	}
-	
-	public Document extractEntities(String data) throws GateException{
 
-		Corpus corpus = (Corpus) Factory
-				.createResource("gate.corpora.CorpusImpl");
+	public Document extractEntities(String data) throws GateException {
 
-		Document doc = (Document) Factory
-				.newDocument(data);
+		Corpus corpus = (Corpus) Factory.createResource("gate.corpora.CorpusImpl");
+
+		Document doc = (Document) Factory.newDocument(data);
 		corpus.add(doc);
 
 		// tell the pipeline about the corpus and run it
 		setCorpus(corpus);
 		execute();
 		
-		AnnotationSet defaultAnnotSet = doc.getAnnotations();
-         Set annotTypesRequired = new HashSet();
-         annotTypesRequired.add("Person");
-         annotTypesRequired.add("Location");
-         annotTypesRequired.add("Organization");
-
-         Set<Annotation> peopleAndPlaces = new HashSet<Annotation>(defaultAnnotSet.get(annotTypesRequired));
-
-         
-         for (Annotation annotation : defaultAnnotSet) {
+		for (Annotation  annotation : doc.getAnnotations()) {
 			
-        	  System.out.println(annotation.toString());
-        	 
+			System.out.println(annotation.toString());
 		}
-		         
-		      
-		 return doc;     
-		      
-		      
+
+		
+		System.out.println("-----------------------------------------------------------------------------------------------------");
+		
+		return doc;
+
 	}
-	
+
 }
