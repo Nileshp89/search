@@ -13,7 +13,9 @@ import gate.util.persistence.PersistenceManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -71,16 +73,55 @@ public class TextEntityExtractor {
 		// tell the pipeline about the corpus and run it
 		setCorpus(corpus);
 		execute();
-		
-		for (Annotation  annotation : doc.getAnnotations()) {
-			
+
+		/*for (Annotation annotation : doc.getAnnotations()) {
+
 			System.out.println(annotation.toString());
 		}
 
-		
-		System.out.println("-----------------------------------------------------------------------------------------------------");
-		
+		System.out.println(
+				"-----------------------------------------------------------------------------------------------------");
+*/
 		return doc;
+
+	}
+
+	public List<String> getEntityData(String entity, Document doc) {
+
+		AnnotationSet annotationSet = doc.getAnnotations();
+
+		List<String> extractedData = new ArrayList<String>();
+		for (Annotation annotation : annotationSet) {
+
+			// System.out.println(annotation.getType());
+
+			if (annotation.getType().equals(entity)) {
+
+				Integer int1 = annotation.getStartNode().getId();
+
+				Integer int2 = annotation.getEndNode().getId();
+
+				System.out.println(int1 + "-----" + int2);
+
+				String text = "";
+				for (int i = int1; i < int2; i++) {
+
+					text = text + annotationSet.get(i).getFeatures().get("string");
+					// System.out.println(annotationSet.get(i).getFeatures().get("string"));
+				}
+				//System.out.println(text);
+
+				if (!extractedData.contains(text)) {
+					extractedData.add(text);
+				}
+
+			}
+
+		}
+
+	//	System.out.println(extractedData.size());
+
+		return extractedData;
 
 	}
 

@@ -1,19 +1,29 @@
 package com.infy.beans;
 
-import java.util.Date;
-import java.util.List;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ComplaintBean {
 	
+	@JsonProperty(value = "Complaint ID")
 	private String complaintId;
-	private Date date;
+	
+	@JsonProperty(value = "Date received")
+	private String date;
+	@JsonProperty(value = "Product")
 	private String product;
+	@JsonProperty(value = "Issue")
 	private String issue;
+	@JsonProperty(value = "Consumer complaint narrative")
 	private String compliantText;
+	@JsonProperty(value = "Company public response")
 	private String companyResponse;
+	@JsonProperty(value = "Company")
 	private String company;
+	@JsonProperty(value = "ZIP code")
 	private String zipCode;
-	private List<String> tags;
 	
 	
 	public String getComplaintId() {
@@ -22,10 +32,10 @@ public class ComplaintBean {
 	public void setComplaintId(String complaintId) {
 		this.complaintId = complaintId;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public String getProduct() {
@@ -64,11 +74,18 @@ public class ComplaintBean {
 	public void setZipCode(String zipCode) {
 		this.zipCode = zipCode;
 	}
-	public List<String> getTags() {
-		return tags;
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "ComplaintBean [complaintId=" + complaintId + ", date=" + date
+				+ ", product=" + product + ", issue=" + issue
+				+ ", compliantText=" + compliantText + ", companyResponse="
+				+ companyResponse + ", company=" + company + ", zipCode="
+				+ zipCode + "]";
 	}
-	public void setTags(List<String> tags) {
-		this.tags = tags;
-	}
-
+	
+	
 }
+
