@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>Solr-NLP use case</title>
+  </head>
+  <body>
+	<h1>Search</h1>
+	<br />
+    <input id="searchterm" />
+    <button id="search">search</button>
+    <div id="results"></div>
+    <script>
+      $("#searchterm").keyup(function(e){
+        var q = $("#searchterm").val();
+        $.getJSON("http://localhost:8080/search?",
+        {
+          query: q,
+          format: "json"
+        },
+        function(data) {
+          $("#results").empty();
+      
+          $("#results").append("<p>Results for <b>" + q + "</b></p>");
+          $.each(data, function(i,item){
+            $("#results").append("<div><a>" + item.complaintId + "</a><br></br>" + item.complaint + "<br><br></br></br></div>");
+            
+          });
+        });
+      });
+    </script>
+    <div style="position:absolute;bottom:0;right:0;text-align:right">
+      <a href="www.infosys.com">Solr-NLP UseCase</a> 2016<br></br>
+      <br></br>
+    </div>
+  </body>
+</html>

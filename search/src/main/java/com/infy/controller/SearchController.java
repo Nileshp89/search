@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.infy.beans.SearchBean;
 import com.infy.nlpprocessor.IssueClassifier;
 import com.infy.nlpprocessor.TextEntityExtractor;
 import com.infy.nlpprocessor.TextPreProcessor;
@@ -85,14 +86,20 @@ public class SearchController {
 		Document doc = textEntityExtractor.extractEntities(query);
 
 		List<String> companyNames = textEntityExtractor.getEntityData("Organization", doc);
-
 		
-		solrUtil.searchData(query, "issue:\""+issue+"\"");
+		List<SearchBean> searchResults = solrUtil.searchData(query, "issue:\""+issue+"\"");
 		
-		
-		ResponseEntity<Object> entity = new ResponseEntity<>(HttpStatus.ACCEPTED);
+		ResponseEntity<Object> entity = new ResponseEntity<>(searchResults,HttpStatus.ACCEPTED);
 
 		return entity;
+	}
+	
+	
+	@RequestMapping("/searchon")
+	public String searchon(Model model){
+		
+		return "index";
+		
 	}
 
 }

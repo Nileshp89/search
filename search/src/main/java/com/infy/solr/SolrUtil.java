@@ -1,6 +1,8 @@
 package com.infy.solr;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -13,6 +15,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.springframework.stereotype.Component;
 
 import com.infy.beans.ComplaintBean;
+import com.infy.beans.SearchBean;
 import com.infy.solrj.SolrServerFactory;
 
 @Component
@@ -45,7 +48,7 @@ public class SolrUtil {
 	}
 	
 	
-	public void searchData(String queryText,String filterQuery) throws SolrServerException, IOException{
+	public List<SearchBean> searchData(String queryText,String filterQuery) throws SolrServerException, IOException{
 		
 		System.out.println("Searching data");
 		
@@ -60,9 +63,31 @@ public class SolrUtil {
 
 	    QueryResponse response = server.query(query);
 	    SolrDocumentList results = response.getResults();
+	    
+	    List<SearchBean> beans = new ArrayList<>();
 	    for (int i = 0; i < results.size(); ++i) {
+	    	
+	    	
+	    	
+	    	if(i==6){
+	    		
+	    		break;
+	    	}
+	    	SearchBean bean = new SearchBean();
+	    	
+	    	bean.setComplaint(((String) results.get(i).getFieldValue("complaint")).substring(00, 200));
+	    	bean.setComplaintId((String) results.get(i).getFieldValue("complaintid"));
+	    	
+	    	beans.add(bean);
+	    	
+	    	System.out.println(bean.getComplaint());
 	      System.out.println(results.get(i));
+	      
+	    	
 	    }
+	    
+	    
+	    return beans;
 		
 	}
 
